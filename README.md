@@ -28,6 +28,7 @@ SplitMate is a Flutter app for Android and iOS that keeps track of who paid for 
 - [Building from source](#building-from-source)
 - [Production release (Android)](#production-release-android)
 - [Building for iOS](#building-for-ios)
+- [Automatic releases (GitHub Actions)](#automatic-releases-github-actions)
 - [Optional: Google Drive backup](#optional-google-drive-backup)
 - [Project structure](#project-structure)
 - [Privacy and security](#privacy-and-security)
@@ -248,6 +249,58 @@ In Xcode, select **Runner**, then **Signing & Capabilities**, and choose your te
 - Build for TestFlight or the App Store (needs a paid Apple Developer account): `flutter build ipa --release`
 
 If `pod install` complains about the minimum iOS version, set `platform :ios, '15.0'` in `ios/Podfile` and run it again.
+
+## Automatic releases (GitHub Actions)
+
+The workflow in [.github/workflows/release.yml](.github/workflows/release.yml) builds the apps for you. **Whenever you push to `main` and the version in `pubspec.yaml` is new**, it:
+
+1. runs `flutter analyze` and all tests (nothing is released if they fail),
+2. builds the Android APK and App Bundle on Linux,
+3. builds the iOS app on macOS,
+4. publishes a GitHub Release tagged `v<version>` with these files attached:
+
+| File | Use |
+| --- | --- |
+| `splitmate-<version>.apk` | Install directly on Android phones |
+| `splitmate-<version>.aab` | Upload to Google Play |
+| `splitmate-<version>-ios-unsigned.ipa` | iOS build that must be signed before installing |
+
+Pushes that do not change the version do nothing, because the tag already exists. You can also start a run by hand from the **Actions** tab (**Release**, then **Run workflow**).
+
+### Releasing a new version
+1. Change the version in `pubspec.yaml`, for example from `version: 0.0.1` to `version: 0.0.2`.
+2. Commit and push to `main`.
+3. Wait for the **Release** workflow to finish, then open the repository's **Releases** page.
+
+The Android build number is calculated from the version (`0.0.2` becomes 2, `1.2.3` becomes 1002003), so it always increases when the version does. Any `+N` in `pubspec.yaml` is ignored by the workflow.
+
+### Android signing secrets
+Without these, the workflow still runs but signs the APK with a debug key (a warning appears in the run). Debug-signed builds cannot go on Google Play and cannot be updated by your real release builds.
+
+In GitHub, open **Settings**, then **Secrets and variables**, then **Actions**, and add:
+
+| Secret | Value |
+| --- | --- |
+| `ANDROID_KEYSTORE_BASE64` | Your `.jks` file encoded as Base64 (see below) |
+| `ANDROID_KEYSTORE_PASSWORD` | The keystore password |
+| `ANDROID_KEY_ALIAS` | The key alias, for example `splitmate` |
+| `ANDROID_KEY_PASSWORD` | The key password |
+
+To copy the Base64 of your keystore to the clipboard on Windows (PowerShell):
+```powershell
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("D:\keys\splitmate-release.jks")) | Set-Clipboard
+```
+On macOS or Linux: `base64 -i splitmate-release.jks | pbcopy` (or `base64 -w0 splitmate-release.jks`).
+
+The keystore is written to the build machine only for the Android job and deleted at the end of it.
+
+### About the iOS file
+Apple only lets signed apps run on an iPhone, and signing needs your Apple account, so the workflow produces an **unsigned** IPA. To install it, either:
+- re-sign it with a tool such as Sideloadly or AltStore (works with a free Apple ID, valid for 7 days), or
+- build and sign it yourself on a Mac as described in [Building for iOS](#building-for-ios), which is also the route to TestFlight and the App Store.
+
+### Costs
+GitHub Actions is free for public repositories. For private repositories, the macOS runner used for iOS uses your free minutes 10 times faster than the Linux runners, so a release takes a noticeable share of the monthly allowance.
 
 ## Optional: Google Drive backup
 
