@@ -1,0 +1,6 @@
+# Copy to android/key.properties (git-ignored) and fill in your values.
+# storeFile is relative to android/app/ or an absolute path.
+storePassword=CHANGE_ME
+keyPassword=CHANGE_ME
+keyAlias=splitmate
+storeFile=D:/keys/splitmate-release.jks
