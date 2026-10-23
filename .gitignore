@@ -1,0 +1,98 @@
+# ---------------------------------------------------------------------------
+# Secrets: never commit signing keys or their passwords
+# ---------------------------------------------------------------------------
+key.properties
+**/key.properties
+*.jks
+*.keystore
+*.p12
+*.pem
+*.mobileprovision
+.env
+.env.*
+
+# ---------------------------------------------------------------------------
+# SplitMate data: backups and sync files contain private expenses
+# ---------------------------------------------------------------------------
+*.smbk
+*.smsync
+*.db
+*.db-wal
+*.db-shm
+
+# ---------------------------------------------------------------------------
+# Build outputs (also APKs/bundles copied to the project root)
+# ---------------------------------------------------------------------------
+/build/
+*.apk
+*.aab
+*.ipa
+
+# ---------------------------------------------------------------------------
+# Flutter / Dart / pub
+# ---------------------------------------------------------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+**/doc/api/
+/coverage/
+.widget_preview/
+migrate_working_dir/
+
+# Symbolication and obfuscation (from --split-debug-info / --obfuscate)
+app.*.symbols
+app.*.map.json
+/debug-info/
+
+# ---------------------------------------------------------------------------
+# Android (android/.gitignore covers the rest)
+# ---------------------------------------------------------------------------
+/android/app/debug
+/android/app/profile
+/android/app/release
+/android/.kotlin/
+/android/.gradle/
+/android/local.properties
+/android/captures/
+**/.cxx/
+
+# ---------------------------------------------------------------------------
+# iOS / macOS (ios/.gitignore covers the rest)
+# ---------------------------------------------------------------------------
+**/ios/Flutter/.last_build_id
+**/Pods/
+**/xcuserdata/
+**/DerivedData/
+.swiftpm/
+.build/
+
+# ---------------------------------------------------------------------------
+# IDEs and editors
+# ---------------------------------------------------------------------------
+.idea/
+*.iml
+*.ipr
+*.iws
+# .vscode/ holds shared launch settings; only ignore personal state.
+.vscode/*.log
+.history
+*.swp
+*.swo
+*~
+
+# ---------------------------------------------------------------------------
+# OS and tooling noise
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.class
+*.log
+*.pyc
+.atom/
+.buildlog/
+.svn/
+.claude/settings.local.json
