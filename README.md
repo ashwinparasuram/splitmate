@@ -9,6 +9,13 @@
   <b>Offline-first. Peer-to-peer. No servers, no accounts, no analytics.</b>
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Built%20with-Claude%20AI-D97757?logo=anthropic&logoColor=white" alt="Built with Claude AI">
+  <img src="https://img.shields.io/badge/Flutter-Android%20%7C%20iOS-02569B?logo=flutter&logoColor=white" alt="Flutter for Android and iOS">
+</p>
+
+> **This app was made using Claude AI.** The code, tests and documentation in this repository were written with [Claude Code](https://claude.com/claude-code), Anthropic's AI coding assistant, working from a detailed specification and reviewed by a human. Please review and test it yourself before relying on it for real money, and see [Known limitations](#known-limitations).
+
 ---
 
 SplitMate is a Flutter app for Android and iOS that keeps track of who paid for what and who owes whom. Unlike most expense-sharing apps, it has **no backend at all**. Your expenses live in a SQLite database on your phone, and phones share groups **directly with each other**, encrypted end to end. A Google Drive backup is available but entirely optional.
